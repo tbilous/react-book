@@ -1,3 +1,4 @@
+console.log();
 var my_news = [
     {
         author: 'Саша Печкин',
@@ -24,16 +25,16 @@ var Article = React.createClass({
             bigText: React.PropTypes.string.isRequired
         })
     },
-    getInitialState: function() {
+    getInitialState: function () {
         return {
-            visible: false
-        };
+            counter: 0
+        }
     },
-    readmoreClick: function(e) {
+    readmoreClick: function (e) {
         e.preventDefault();
         this.setState({visible: true});
     },
-    render: function() {
+    render: function () {
         var author = this.props.data.author,
             text = this.props.data.text,
             bigText = this.props.data.bigText,
@@ -45,10 +46,10 @@ var Article = React.createClass({
                 <p className='news__text'>{text}</p>
                 <a href="#"
                    onClick={this.readmoreClick}
-                   className={'news__readmore ' + (visible ? 'none': '')}>
+                   className={'news__readmore ' + (visible ? 'none' : '')}>
                     Подробнее
                 </a>
-                <p className={'news__big-text ' + (visible ? '': 'none')}>{bigText}</p>
+                <p className={'news__big-text ' + (visible ? '' : 'none')}>{bigText}</p>
             </div>
         )
     }
@@ -58,37 +59,69 @@ var News = React.createClass({
     propTypes: {
         data: React.PropTypes.array.isRequired
     },
-    render: function() {
+    getInitialState: function () {
+        return {
+            counter: 0
+        }
+    },
+    render: function () {
         var data = this.props.data;
         var newsTemplate;
-
         if (data.length > 0) {
-            newsTemplate = data.map(function(item, index) {
+            newsTemplate = data.map(function (item, index) {
                 return (
                     <div key={index}>
-                        <Article data={item} />
+                        <Article data={item}/>
                     </div>
                 )
             })
         } else {
             newsTemplate = <p>К сожалению новостей нет</p>
         }
-
         return (
             <div className='news'>
                 {newsTemplate}
-                <strong className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.length}</strong>
+                <strong
+                    className={'news__count ' + (data.length > 0 ? '' : 'none') }>
+                    Всего новостей: {data.length}
+                </strong>
             </div>
+        );
+    }
+});
+// --- добавили test input ---
+var TestInput = React.createClass({
+    componentDidMount: function() { //ставим фокус в input
+        ReactDOM.findDOMNode(this.refs.myTestInput).focus();
+    },
+    onBtnClickHandler: function () {
+        console.log(this.refs);
+        alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
+    },
+    render: function () {
+        return (
+                <div className="input-group">
+                    <input className='form-control'
+                           defaultValue=''
+                           placeholder='введите значение'
+                           ref='myTestInput'
+                    />
+                    <span className="input-group-addon btn" onClick={ this.onBtnClickHandler } ref='alert_button'>
+                        @
+                    </span>
+                </div>
+
         );
     }
 });
 
 var App = React.createClass({
-    render: function() {
+    render: function () {
         return (
             <div className='app'>
                 <h3>Новости</h3>
-                <News data={my_news} />
+                <TestInput />
+                <News data={my_news}/>
             </div>
         );
     }

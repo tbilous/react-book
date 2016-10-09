@@ -28,3 +28,8 @@ p {
     margin: 10px 0 0 0;
     display: block;
 }
+.input-group {
+    width: 600px;
+    margin: 0 0 5px;
+    box-shadow: 2px 2px 5px -1px rgb(0, 81, 202);
+}
