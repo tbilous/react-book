@@ -91,25 +91,50 @@ var News = React.createClass({
 });
 // --- добавили test input ---
 var TestInput = React.createClass({
-    componentDidMount: function() { //ставим фокус в input
-        ReactDOM.findDOMNode(this.refs.myTestInput).focus();
+    getInitialState: function() { //устанавливаем начальное состояние (state)
+        return {
+            btnIsDisabled: true
+        };
+    },
+    componentDidMount: function () { //ставим фокус в input
+        ReactDOM.findDOMNode(this.refs.author).focus();
     },
     onBtnClickHandler: function () {
         console.log(this.refs);
         alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
     },
+    onCheckRuleClick: function(e) {
+        this.setState({btnIsDisabled: !this.state.btnIsDisabled}); //устанавливаем значение в state
+    },
     render: function () {
         return (
-                <div className="input-group">
-                    <input className='form-control'
-                           defaultValue=''
-                           placeholder='введите значение'
-                           ref='myTestInput'
-                    />
-                    <span className="input-group-addon btn" onClick={ this.onBtnClickHandler } ref='alert_button'>
-                        @
-                    </span>
-                </div>
+            <form className='add cf'>
+                <input
+                    type='text'
+                    className='add__author'
+                    defaultValue=''
+                    placeholder='Ваше имя'
+                    ref='author'
+                />
+                <textarea
+                    className='add__text'
+                    defaultValue=''
+                    placeholder='Текст новости'
+                    ref='text'
+                ></textarea>
+                <label className='add__checkrule'>
+                    <input type='checkbox' defaultChecked={false} ref='checkrule' onChange={this.onCheckRuleClick}/>Я
+                    согласен с
+                    правилами
+                </label>
+                <button
+                    className='add__btn'
+                    onClick={this.onBtnClickHandler}
+                    ref='alert_button'
+                    disabled={this.state.btnIsDisabled}>
+                    Показать alert
+                </button>
+            </form>
 
         );
     }
